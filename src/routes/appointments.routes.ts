@@ -1,17 +1,29 @@
 import { Router } from 'express'
-import { uuid } from 'uuidv4'
+import { parseISO } from 'date-fns'
+import AppointmentRepository from '@repositories/AppointmentRepository'
+import CreateAppointmentService from '@services/appointment/CreateAppointmentService'
 
 const router = Router()
+const repository = new AppointmentRepository()
 
-let appointments = []
+router.get('/', (request, response) => {
+  return response.json(repository.all())
+})
 
 router.post('/', (request, response) => {
-  const { provider, date } = request.body
-  const appointment = { id: uuid(), provider, date }
+  try {
+    const { provider, date } = request.body
 
-  appointments = [...appointments, appointment]
+    const ISODate = parseISO(date)
 
-  return response.json({ appointment })
+    const createAppointmentService = new CreateAppointmentService(repository)
+
+    const appointment = createAppointmentService.execute({ provider, date: ISODate })
+
+    return response.json({ appointment })
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
 })
 
 export default router
