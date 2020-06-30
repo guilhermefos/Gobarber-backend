@@ -8,11 +8,11 @@ router.post('/', async (request, response) => {
   try {
     const service = new AuthenticateUserService()
 
-    const { user } = await service.execute({ ...request.body })
+    const { user, token } = await service.execute({ ...request.body })
 
     delete user.password
 
-    return response.json({ user })
+    return response.json({ user, token })
   } catch (error) {
     return response.status(400).json({ error: error.message })
   }
