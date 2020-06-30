@@ -18,7 +18,8 @@ module.exports = {
         '@controllers': './src/controllers',
         '@views': './src/views',
         '@repositories': './src/repositories',
-        '@services': './src/services'
+        '@services': './src/services',
+        '@middleware': './src/middleware',
       }
     }]
   ],
