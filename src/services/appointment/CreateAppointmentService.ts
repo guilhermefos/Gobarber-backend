@@ -1,6 +1,7 @@
 import { startOfHour } from 'date-fns'
 import { getCustomRepository } from 'typeorm'
 
+import AppError from '@errors/AppError'
 import Appointment from '@models/Appointment'
 import AppointmentRepository from '@repositories/AppointmentRepository'
 
@@ -16,7 +17,7 @@ class CreateAppointmentService {
     const parsedDate = startOfHour(date)
 
     if (await repository.findByDate(parsedDate)) {
-      throw Error('This appointment is already booked')
+      throw AppError('This appointment is already booked')
     }
 
     const appointment = repository.create({

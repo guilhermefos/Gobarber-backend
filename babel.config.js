@@ -20,6 +20,7 @@ module.exports = {
         '@repositories': './src/repositories',
         '@services': './src/services',
         '@middleware': './src/middleware',
+        '@errors': './src/errors',
       }
     }]
   ],
