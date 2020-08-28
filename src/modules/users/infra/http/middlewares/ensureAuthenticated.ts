@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { verify } from 'jsonwebtoken'
 
-import AppError from '@errors/AppError'
+import AppError from '@shared/errors/AppError'
 import authConfig from '@config/auth'
 
 interface Token {
@@ -10,7 +10,7 @@ interface Token {
   sub: string
 }
 
-export default function ensureAuthenticated (
+export default function ensureAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction) {

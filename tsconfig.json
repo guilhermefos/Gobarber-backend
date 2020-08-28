@@ -27,6 +27,8 @@
       "@services/*": ["./src/services/*"],
       "@middleware/*": ["./src/middleware/*"],
       "@errors/*": ["./src/errors/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@modules/*": ["./src/modules/*"],
     }
   },
   "include": [
