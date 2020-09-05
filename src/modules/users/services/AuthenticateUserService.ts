@@ -1,10 +1,12 @@
-import { getRepository } from 'typeorm'
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
+import { injectable, inject } from "tsyringe";
+
+import IUserRepository from '../repositories/IUsersRepository';
 
 import authConfig from '@config/auth'
-import User from '@models/User'
-import AppError from '@errors/AppError'
+import AppError from '@shared/errors/AppError'
+import User from '../infra/typeorm/entities/User'
 
 interface Request {
   email: string;
@@ -16,11 +18,15 @@ interface Response {
   token: string
 }
 
+@injectable()
 class AuthenthicateUserService {
-  public async execute ({ email, password }: Request): Promise<Response> {
-    const userRepository = getRepository(User)
+  constructor(
+    @inject('UserRepository')
+    private repository: IUserRepository
+  ) { }
 
-    const user = await userRepository.findOne({ where: { email } })
+  public async execute({ email, password }: Request): Promise<Response> {
+    const user = await this.repository.findByEmail(email);
 
     if (!user) {
       throw new AppError('Invalid credentials', 401)
