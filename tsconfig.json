@@ -28,7 +28,7 @@
       "@middleware/*": ["./src/middleware/*"],
       "@errors/*": ["./src/errors/*"],
       "@shared/*": ["./src/shared/*"],
-      "@modules/*": ["./src/modules/*"],
+      "@modules/*": ["./src/modules/*"]
     }
   },
   "include": [

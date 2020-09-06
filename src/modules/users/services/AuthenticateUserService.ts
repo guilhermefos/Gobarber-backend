@@ -1,8 +1,10 @@
-import { compare } from 'bcryptjs'
+import "reflect-metadata"
+
 import { sign } from 'jsonwebtoken'
 import { injectable, inject } from "tsyringe";
 
 import IUserRepository from '../repositories/IUsersRepository';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
 import authConfig from '@config/auth'
 import AppError from '@shared/errors/AppError'
@@ -22,7 +24,10 @@ interface Response {
 class AuthenthicateUserService {
   constructor(
     @inject('UserRepository')
-    private repository: IUserRepository
+    private repository: IUserRepository,
+
+    @inject('HashProvider')
+    private hasProvider: IHashProvider
   ) { }
 
   public async execute({ email, password }: Request): Promise<Response> {
@@ -32,7 +37,7 @@ class AuthenthicateUserService {
       throw new AppError('Invalid credentials', 401)
     }
 
-    const matchPassword = await compare(password, user.password)
+    const matchPassword = await this.hasProvider.compareHash(password, user.password)
 
     if (!matchPassword) {
       throw new AppError('Invalid credentials')
@@ -46,7 +51,7 @@ class AuthenthicateUserService {
     })
 
     return { user, token }
-  }
+  };
 }
 
 export default AuthenthicateUserService

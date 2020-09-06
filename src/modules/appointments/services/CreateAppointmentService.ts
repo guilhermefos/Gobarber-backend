@@ -1,5 +1,7 @@
 import { startOfHour } from 'date-fns'
-import { injectable, inject } from "tsyringe";
+import "reflect-metadata"
+
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'
 import Appointment from '../infra/typeorm/entities/Appointment';
@@ -30,7 +32,7 @@ class CreateAppointmentService {
     });
 
     return appointment;
-  }
+  };
 }
 
 export default CreateAppointmentService
