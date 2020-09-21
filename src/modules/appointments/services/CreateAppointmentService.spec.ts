@@ -28,7 +28,7 @@ describe('CreateAppointment', () => {
             provider_id: '134924'
         });
 
-        expect(createAppointmentService.execute({
+        await expect(createAppointmentService.execute({
             date: appointment.date,
             provider_id: '123143'
         })).rejects.toBeInstanceOf(AppError);

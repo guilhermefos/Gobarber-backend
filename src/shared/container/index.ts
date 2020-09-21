@@ -9,6 +9,12 @@ import AppointmentsRepository from '@modules/appointments/infra/typeorm/reposito
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
 
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import HashProvider from '@modules/users/providers/HashProvider/implementations/BCryptHashProvider';
+
+import IUsersTokensRepository from '@modules/users/repositories/IUserTokensRepository';
+import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
+
 container.registerSingleton<IAppoitmentsRepository>(
     'AppointmentsRepository',
     AppointmentsRepository
@@ -17,4 +23,14 @@ container.registerSingleton<IAppoitmentsRepository>(
 container.registerSingleton<IUsersRepository>(
     'UserRepository',
     UserRepository
+);
+
+container.registerSingleton<IHashProvider>(
+    'HashProvider',
+    HashProvider
+);
+
+container.registerSingleton<IUsersTokensRepository>(
+    'UserTokensRepository',
+    UserTokensRepository
 );
