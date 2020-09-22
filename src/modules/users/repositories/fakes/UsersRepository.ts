@@ -3,9 +3,21 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
 import User from '@modules/users/infra/typeorm/entities/User';
+import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 
 class UsersRepository implements IUsersRepository {
     private users: User[] = [];
+
+
+    public async findAllProviders({ id }: IFindAllProvidersDTO): Promise<User[]> {
+        let users = this.users;
+
+        if (id) {
+            users = this.users.filter(usr => usr.id !== id);
+        };
+
+        return users;
+    }
 
     public async findById(id: string): Promise<User | undefined> {
         const user = this.users.find(user => user.id === id);

@@ -27,7 +27,7 @@ class FakeUserTokensRepository implements IUserTokensRepository {
         return this.userTokens.find(
             findToken => findToken.token === token
         );
-    }
+    };
 }
 
 export default FakeUserTokensRepository
