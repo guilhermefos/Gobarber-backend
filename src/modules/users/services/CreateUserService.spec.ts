@@ -3,13 +3,22 @@ import UsersRepository from '@modules/users/repositories/fakes/UsersRepository';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider'
 import AppError from '@shared/errors/AppError';
 
-describe('CreateUserService', () => {
-    it('should be able to create a new User', async () => {
-        const fakeHashProvider = new FakeHashProvider();
-        const createUserService = new CreateUserService(
-            new UsersRepository(), fakeHashProvider
-        );
+let fakeHashProvider: FakeHashProvider;
+let createUserService: CreateUserService;
+let userRepository: UsersRepository;
 
+describe('CreateUserService', () => {
+    beforeEach(() => {
+        fakeHashProvider = new FakeHashProvider();
+
+        userRepository = new UsersRepository();
+
+        createUserService = new CreateUserService(
+            userRepository, fakeHashProvider
+        );
+    });
+
+    it('should be able to create a new User', async () => {
         const user = await createUserService.execute({
             name: 'Guilherme Oliveira',
             email: 'guilherme.ferreira@recrutei.com.br',
@@ -20,11 +29,6 @@ describe('CreateUserService', () => {
     });
 
     it('should not be able to create a new user with a existed email', async () => {
-        const fakeHashProvider = new FakeHashProvider();
-        const createUserService = new CreateUserService(
-            new UsersRepository(), fakeHashProvider
-        );
-
         await createUserService.execute({
             name: 'Guilherme Oliveira',
             email: 'guilherme.ferreira@recrutei.com.br',
