@@ -30,7 +30,9 @@ describe('UpdateProfileService', () => {
         const updatedUser = await updateProfieService.execute({
             user_id: user.id,
             name: "John Tre",
-            email: "johntre@example.com"
+            email: "johntre@example.com",
+            password: "123456789",
+            old_password: "123456"
         });
 
         expect(updatedUser.name).toBe("John Tre");
@@ -81,6 +83,16 @@ describe('UpdateProfileService', () => {
 
         await expect(updateProfieService.execute({
             user_id: user.id,
+            name: "John Tre",
+            email: "johntre@example.com",
+            password: "123456",
+            old_password: "flajfalk"
+        })).rejects.toBeInstanceOf(AppError);
+    });
+
+    it('should not be able to update a non-existing profile user', async () => {
+        await expect(updateProfieService.execute({
+            user_id: 'non-existing-user-id',
             name: "John Tre",
             email: "johntre@example.com",
             password: "123456",

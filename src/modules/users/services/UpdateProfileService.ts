@@ -34,11 +34,16 @@ class UpdateProfileService {
 
         const userWithUpdatedEmail = await this.userRepository.findByEmail(email);
 
-        if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id)
+        if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {
             throw new AppError("E-mail already exist");
+        };
 
-        if (password && !old_password)
+        user.name = name;
+        user.email = email;
+
+        if (password && !old_password) {
             throw new AppError("Old password is required to update the new password");
+        };
 
         if (password && old_password) {
             const checkOldPassword = await this.hashProvider.compareHash(
@@ -46,14 +51,12 @@ class UpdateProfileService {
                 user.password
             );
 
-            if (!checkOldPassword)
+            if (!checkOldPassword) {
                 throw new AppError("Old password is wrong");
+            }
 
             user.password = await this.hashProvider.generateHash(password);
-        }
-
-        user.name = name;
-        user.email = email;
+        };
 
         return this.userRepository.save(user);
     };

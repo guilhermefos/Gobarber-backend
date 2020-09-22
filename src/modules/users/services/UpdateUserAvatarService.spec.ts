@@ -60,6 +60,7 @@ describe('UpdateUserAvatar', () => {
 
         expect(user.avatar).toBe('avatar2.png');
     });
+
     it('should not be able to add a avatar if user not exist', async () => {
         await expect(updateUserAvatarService.execute({
             user_id: 'not-exist',
