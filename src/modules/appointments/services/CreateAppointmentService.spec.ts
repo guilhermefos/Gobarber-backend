@@ -22,7 +22,7 @@ describe('CreateAppointment', () => {
         const appointment = await createAppointmentService.execute({
             date: new Date(2020, 4, 10, 13),
             user_id: '123123',
-            provider_id: '134924'
+            provider_id: '1349fa24'
         });
 
         expect(appointment).toHaveProperty('id');
@@ -34,13 +34,13 @@ describe('CreateAppointment', () => {
         const appointment = await createAppointmentService.execute({
             date,
             user_id: '123123',
-            provider_id: '134924'
+            provider_id: '1349fa24'
         });
 
         await expect(createAppointmentService.execute({
             date: appointment.date,
             user_id: '123123',
-            provider_id: '123143'
+            provider_id: '12fadfa3143'
         })).rejects.toBeInstanceOf(AppError);
     });
 
@@ -52,6 +52,20 @@ describe('CreateAppointment', () => {
         await expect(
             createAppointmentService.execute({
                 date: new Date(2020, 4, 10, 11),
+                user_id: '123',
+                provider_id: '12fda3'
+            }),
+        ).rejects.toBeInstanceOf(AppError);
+    });
+
+    it('should not be able to acreate a appointment with same user as providers', async () => {
+        jest.spyOn(Date, 'now').mockImplementation(() => {
+            return new Date(2020, 4, 10, 12).getTime();
+        });
+
+        await expect(
+            createAppointmentService.execute({
+                date: new Date(2020, 4, 10, 13),
                 user_id: '123',
                 provider_id: '123'
             }),

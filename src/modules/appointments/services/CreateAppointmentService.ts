@@ -27,6 +27,10 @@ class CreateAppointmentService {
       throw new AppError("You can't create an appointment on a past date.");
     }
 
+    if (user_id === provider_id) {
+      throw new AppError("You can't create an appointment with yourself");
+    }
+
     if (await this.repository.findByDate(parsedDate)) {
       throw new AppError('This appointment is already booked');
     }
