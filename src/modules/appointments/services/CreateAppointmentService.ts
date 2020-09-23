@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns'
+import { startOfHour, isBefore } from 'date-fns'
 import "reflect-metadata"
 
 import { injectable, inject } from 'tsyringe';
@@ -22,6 +22,10 @@ class CreateAppointmentService {
 
   public async execute({ provider_id, user_id, date }: Request): Promise<Appointment> {
     const parsedDate = startOfHour(date);
+
+    if (isBefore(parsedDate, Date.now())) {
+      throw new AppError("You can't create an appointment on a past date.");
+    }
 
     if (await this.repository.findByDate(parsedDate)) {
       throw new AppError('This appointment is already booked');
