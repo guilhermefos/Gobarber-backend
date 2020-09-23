@@ -72,4 +72,26 @@ describe('CreateAppointment', () => {
         ).rejects.toBeInstanceOf(AppError);
     });
 
+    it('should not be able to acreate a appointment outside the available hours', async () => {
+        jest.spyOn(Date, 'now').mockImplementation(() => {
+            return new Date(2020, 4, 10, 12).getTime();
+        });
+
+        await expect(
+            createAppointmentService.execute({
+                date: new Date(2020, 4, 11, 7),
+                user_id: '123',
+                provider_id: 'provider-id'
+            }),
+        ).rejects.toBeInstanceOf(AppError);
+
+        await expect(
+            createAppointmentService.execute({
+                date: new Date(2020, 4, 11, 18),
+                user_id: '123',
+                provider_id: 'provider-id'
+            }),
+        ).rejects.toBeInstanceOf(AppError);
+    });
+
 });
