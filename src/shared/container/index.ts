@@ -15,6 +15,9 @@ import HashProvider from '@modules/users/providers/HashProvider/implementations/
 import IUsersTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository'
+
 container.registerSingleton<IAppoitmentsRepository>(
     'AppointmentsRepository',
     AppointmentsRepository
@@ -33,4 +36,9 @@ container.registerSingleton<IHashProvider>(
 container.registerSingleton<IUsersTokensRepository>(
     'UserTokensRepository',
     UserTokensRepository
+);
+
+container.registerSingleton<INotificationsRepository>(
+    'NotificationsRepository',
+    NotificationsRepository
 );
