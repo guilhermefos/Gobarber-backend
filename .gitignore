@@ -3,3 +3,5 @@ dist
 tmp/*
 !temp/.gitkeep
 coverage/*
+.env
+ormconfig.json
