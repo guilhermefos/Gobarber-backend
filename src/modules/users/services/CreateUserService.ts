@@ -8,6 +8,8 @@ import User from '../infra/typeorm/entities/User';
 import IUserRepository from '../repositories/IUsersRepository';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 interface Request {
   name: string,
   email: string,
@@ -21,7 +23,10 @@ class CreateUserService {
     private repository: IUserRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) { }
 
   public async execute({ name, email, password }: Request): Promise<User> {
@@ -33,11 +38,15 @@ class CreateUserService {
 
     const passwordHash = await this.hashProvider.generateHash(password);
 
-    return await this.repository.create({
+    const user = await this.repository.create({
       name,
       email,
       password: passwordHash
     });
+
+    await this.cacheProvider.invalidatePrefix('providers-list');
+
+    return user;
   };
 }
 

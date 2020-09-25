@@ -12,9 +12,10 @@ import CreateUserService from '../../../services/CreateUserService'
 
 
 const router = Router()
-const upload = multer(uploadConfig)
 const userController = new UserController();
 const userAvatarController = new UserAvatarController();
+
+const upload = multer(uploadConfig.multer);
 
 router.post(
   '/',
