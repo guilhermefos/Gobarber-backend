@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 
+import { classToClass } from "class-transformer";
+
 import ListProviderAppointmentsService from '../../../services/ListProviderAppointmentsService';
 
 export default class ProviderAppointmentsController {
@@ -17,6 +19,6 @@ export default class ProviderAppointmentsController {
             year: Number(year)
         });
 
-        return response.json(appointments);
+        return response.json(classToClass(appointments));
     };
 }
