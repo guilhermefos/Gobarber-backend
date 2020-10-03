@@ -7,6 +7,8 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 
 import User from '@modules/users/infra/typeorm/entities/User'
 
+import { classToClass } from "class-transformer";
+
 interface Request {
     user_id: string;
 }
@@ -34,7 +36,7 @@ class ListProvidersService {
 
         await this.cacheProvider.save(
             `providers-list:${user_id}`,
-            JSON.stringify(users)
+            classToClass(users)
         );
 
         return users;
